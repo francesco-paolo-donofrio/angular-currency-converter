@@ -1,9 +1,10 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-currency-input',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './currency-input.component.html',
   styleUrl: './currency-input.component.css'
 })
