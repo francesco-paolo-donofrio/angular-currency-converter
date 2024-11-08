@@ -14,4 +14,12 @@ export class CurrencyInputComponent {
 
   @Output() currencyChange = new EventEmitter<string>();
   @Output() amountChange = new EventEmitter<number>();
+
+  onCurrencyChange(event: any) {
+    this.currencyChange.emit(event.target.value);
+  }
+
+  onAmountChange(event: any) {
+    this.amountChange.emit(event.target.value);
+  }
 }
