@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-currency-input',
@@ -8,5 +8,10 @@ import { Component } from '@angular/core';
   styleUrl: './currency-input.component.css'
 })
 export class CurrencyInputComponent {
-  
+  @Input() currencies: string[] = [];
+  @Input() selectedCurrency: string = '';
+  @Input() amount: number = 0;
+
+  @Output() currencyChange = new EventEmitter<string>();
+  @Output() amountChange = new EventEmitter<number>();
 }
