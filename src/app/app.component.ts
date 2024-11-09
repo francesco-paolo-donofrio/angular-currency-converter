@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { CurrencyService } from './currency.service';
+import { catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 
 
@@ -21,6 +23,7 @@ export class AppComponent implements OnInit {
   fromAmount: number = 1;
   toAmount: number = 1;
   targetCurrency: string = '';
+  errorMessage: string = '';
 
   constructor(private currencyService: CurrencyService) { }
 
@@ -37,12 +40,21 @@ export class AppComponent implements OnInit {
 
   convertedAmount: number | null = null;
   convertCurrency() {
-    if (this.amount && this.selectedCurrency && this.targetCurrency) {
-      this.currencyService.convert(this.amount, this.selectedCurrency, this.targetCurrency)
-        .subscribe((response) => {
+    this.currencyService.convert(this.amount, this.selectedCurrency, this.targetCurrency)
+      .pipe(
+        catchError(error => {
+          console.error('Error occurred:', error);
+          return of(null);
+        })
+      )
+      .subscribe((response) => {
+        if (response) {
           this.convertedAmount = response.rates[this.targetCurrency];
-        });
-    }
+        } else {
+          // Display an error message in the UI
+          this.errorMessage = 'Conversion failed. Please try again later.';
+        }
+      });
   }
 
   onFromCurrencyChange(newCurrency: string) {
