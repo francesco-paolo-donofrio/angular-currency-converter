@@ -1,11 +1,13 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient} from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-currency-input',
   standalone: true,
-  imports: [CommonModule, HttpClientModule,],
+  imports: [CommonModule],
   templateUrl: './currency-input.component.html',
   styleUrl: './currency-input.component.css'
 })
@@ -35,5 +37,29 @@ export class CurrencyInputComponent {
 
   onAmountChange(event: any) {
     this.amountChange.emit(event.target.value);
+  }
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+
+export class CurrencyService {
+  private apiUrl = 'https://api.frankfurter.app';
+
+  constructor(private http: HttpClient) { }
+
+  getCurrencies(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/currencies`);
+  }
+
+  convert(amount: number, from: string, to: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/latest`, {
+      params: {
+        amount: amount.toString(),
+        from: from,
+        to: to
+      }
+    });
   }
 }
