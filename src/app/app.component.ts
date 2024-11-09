@@ -20,6 +20,7 @@ export class AppComponent implements OnInit {
   toCurrency: string = 'USD';
   fromAmount: number = 1;
   toAmount: number = 1;
+  targetCurrency: string = '';
 
   constructor(private currencyService: CurrencyService) { }
 
@@ -33,12 +34,13 @@ export class AppComponent implements OnInit {
       this.convertCurrency();
     });
   }
+
+  convertedAmount: number | null = null;
   convertCurrency() {
-    if (this.fromCurrency && this.toCurrency) {
-      this.currencyService
-        .convert(this.fromAmount, this.fromCurrency, this.toCurrency)
-        .subscribe((data: any) => {
-          this.toAmount = data.rates[this.toCurrency];
+    if (this.amount && this.selectedCurrency && this.targetCurrency) {
+      this.currencyService.convert(this.amount, this.selectedCurrency, this.targetCurrency)
+        .subscribe((response) => {
+          this.convertedAmount = response.rates[this.targetCurrency];
         });
     }
   }
