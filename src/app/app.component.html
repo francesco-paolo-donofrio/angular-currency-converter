@@ -24,9 +24,7 @@
     </div>
   
     <!-- Mostra l'importo convertito -->
-    <div *ngIf="toAmount !== null">
-      <p>{{ fromAmount }} {{ fromCurrency }} = {{ toAmount | number:'1.2-2' }} {{ newCurrency }}</p>
-    </div>
+    
   
     <!-- Messaggio di errore se la conversione non va a buon fine -->
     <div *ngIf="errorMessage">
@@ -34,7 +32,9 @@
     </div>
   </div>
   <div class="convertedContainer">
-
+    <div *ngIf="toAmount !== null">
+      <p>{{ fromAmount }} {{ fromCurrency }} = {{ toAmount | number:'1.2-2' }} {{ newCurrency }}</p>
+    </div>
   </div>
 </main>
 <router-outlet />

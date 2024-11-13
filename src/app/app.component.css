@@ -49,6 +49,9 @@ label {
 
 .convertedContainer{
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     width: 500px;
     border: 2px solid rgb(61, 238, 45);
     padding: 20px;

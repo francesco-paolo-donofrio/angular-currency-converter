@@ -10,9 +10,9 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, CurrencyInputComponent, FormsModule],
+  imports: [RouterOutlet, CommonModule, FormsModule],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'] // Correzione: cambiato in styleUrls
+  styleUrls: ['./app.component.css'] 
 })
 export class AppComponent implements OnInit {
   title = 'angular-currency-converter';
@@ -28,7 +28,6 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.currencyService.getCurrencies().subscribe((data: any) => {
       this.currencies = Object.keys(data);
-      // Effettua la prima conversione con valori di default
       this.convertCurrency();
     });
   }
@@ -38,7 +37,7 @@ export class AppComponent implements OnInit {
       .pipe(
         catchError(error => {
           console.error('Error occurred:', error);
-          this.errorMessage = 'Conversion failed. Please try again later.'; // Messaggio d'errore nell'interfaccia
+          this.errorMessage = 'Conversion failed. Please try again later.';
           return of(null);
         })
       )
