@@ -1,9 +1,12 @@
 <div class="currency-input">
-  <input type="number" [value]="amount" (input)="onAmountChange($event)" />
-  <select (change)="onCurrencyChange($event)">
-    <option *ngFor="let currency of currencies" [value]="currency">
-      {{ currency }}
-    </option>
-  </select>
+  <div class="currency-input">
+    <label for="amount">Importo:</label>
+    <input type="number" [(ngModel)]="amount" (input)="onAmountChange($event)" />
+  
+    <label for="currency">Valuta:</label>
+    <select [(ngModel)]="selectedCurrency" (change)="onCurrencyChange($event)">
+      <option *ngFor="let currency of currencies" [value]="currency">{{ currency }}</option>
+    </select>
+  </div>
 </div>
 

@@ -4,11 +4,13 @@ import { RouterOutlet } from '@angular/router';
 import { CurrencyService } from './currency.service';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { CurrencyInputComponent } from './currency-input/currency-input.component';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule],
+  imports: [RouterOutlet, CommonModule, CurrencyInputComponent, FormsModule],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'] // Correzione: cambiato in styleUrls
 })

@@ -169,8 +169,46 @@
 </style>
 
 <main class="main">
-  <button (click)="convertCurrency()">Convert</button>
-
+  <div class="container">
+    <h1>{{ title }}</h1>
+    <p>Converti importi tra diverse valute.</p>
+  
+    <!-- Sezione per selezionare le valute e inserire l'importo -->
+    <div>
+      <label for="fromAmount">Importo:</label>
+      <input type="number" [(ngModel)]="fromAmount" (input)="onFromAmountChange(fromAmount)" />
+  
+      <label for="fromCurrency">Da:</label>
+      <select [(ngModel)]="fromCurrency" (change)="onFromCurrencyChange(fromCurrency)">
+        <option *ngFor="let currency of currencies" [value]="currency">{{ currency }}</option>
+      </select>
+  
+      <label for="toCurrency">A:</label>
+      <select [(ngModel)]="newCurrency" (change)="onToCurrencyChange(newCurrency)">
+        <option *ngFor="let currency of currencies" [value]="currency">{{ currency }}</option>
+      </select>
+  
+      <!-- Bottone per la conversione -->
+      <button (click)="convertCurrency()">Converti</button>
+    </div>
+  
+    <!-- Mostra l'importo convertito -->
+    <div *ngIf="toAmount !== null">
+      <p>{{ fromAmount }} {{ fromCurrency }} = {{ toAmount | number:'1.2-2' }} {{ newCurrency }}</p>
+    </div>
+  
+    <!-- Messaggio di errore se la conversione non va a buon fine -->
+    <div *ngIf="errorMessage">
+      <p style="color: red;">{{ errorMessage }}</p>
+    </div>
+  </div>
+  <app-currency-input 
+  [currencies]="currencies" 
+  [selectedCurrency]="fromCurrency" 
+  [amount]="fromAmount"
+  (currencyChange)="onFromCurrencyChange($event)"
+  (amountChange)="onFromAmountChange($event)">
+</app-currency-input>
 </main>
 
 
