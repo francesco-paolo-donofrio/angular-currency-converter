@@ -5,24 +5,20 @@ import { CurrencyService } from './currency.service';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 
-
-
-
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, CommonModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css'] // Correzione: cambiato in styleUrls
 })
 export class AppComponent implements OnInit {
   title = 'angular-currency-converter';
   currencies: string[] = [];
   fromCurrency: string = 'EUR';
-  toCurrency: string = 'USD';
+  newCurrency: string = 'USD';
   fromAmount: number = 1;
-  toAmount: number = 1;
-  targetCurrency: string = '';
+  toAmount: number | null = null;
   errorMessage: string = '';
 
   constructor(private currencyService: CurrencyService) { }
@@ -30,61 +26,44 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.currencyService.getCurrencies().subscribe((data: any) => {
       this.currencies = Object.keys(data);
-      // Imposta valori di default
-      this.fromCurrency = 'EUR';
-      this.toCurrency = 'USD';
-      // Effettua la prima conversione
+      // Effettua la prima conversione con valori di default
       this.convertCurrency();
     });
   }
 
-  convertedAmount: number | null = null;
   convertCurrency() {
-    this.currencyService.convert(this.amount, this.selectedCurrency, this.targetCurrency)
+    this.currencyService.convert(this.fromAmount, this.fromCurrency, this.newCurrency)
       .pipe(
         catchError(error => {
           console.error('Error occurred:', error);
+          this.errorMessage = 'Conversion failed. Please try again later.'; // Messaggio d'errore nell'interfaccia
           return of(null);
         })
       )
       .subscribe((response) => {
-        if (response) {
-          this.convertedAmount = response.rates[this.targetCurrency];
+        if (response && response.rates && response.rates[this.newCurrency]) {
+          // Usa la risposta per ottenere il tasso di conversione desiderato
+          this.toAmount = response.rates[this.newCurrency] * this.fromAmount;
+          this.errorMessage = ''; // Reset dell'errore in caso di successo
         } else {
-          // Display an error message in the UI
-          this.errorMessage = 'Conversion failed. Please try again later.';
+          // Se non ci sono dati di conversione disponibili
+          this.errorMessage = 'Conversion rate not available for the selected currency.';
         }
       });
   }
 
   onFromCurrencyChange(newCurrency: string) {
+    this.fromCurrency = newCurrency;
     this.convertCurrency();
   }
 
   onToCurrencyChange(newCurrency: string) {
+    this.newCurrency = newCurrency;
     this.convertCurrency();
   }
 
   onFromAmountChange(newAmount: number) {
-    this.toAmount = newAmount; // Aggiorna immediatamente l'importo
+    this.fromAmount = newAmount;
     this.convertCurrency();
   }
-
-  onToAmountChange(newAmount: number) {
-    // Puoi implementare la conversione inversa se necessario
-  }
-
-  selectedCurrency: string = '';
-amount: number = 0;
-
-onCurrencySelected(currency: string) {
-  this.selectedCurrency = currency;
 }
-
-onAmountEntered(amount: number) {
-  this.amount = amount;
-}
-}
-
-
-
