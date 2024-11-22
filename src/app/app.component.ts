@@ -4,7 +4,6 @@ import { RouterOutlet } from '@angular/router';
 import { CurrencyService } from './currency.service';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
-import { CurrencyInputComponent } from './currency-input/currency-input.component';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -26,13 +25,24 @@ export class AppComponent implements OnInit {
   constructor(private currencyService: CurrencyService) { }
 
   ngOnInit() {
-    this.currencyService.getCurrencies().subscribe((data: any) => {
-      this.currencies = Object.keys(data);
-      this.convertCurrency();
+    this.currencyService.getCurrencies().subscribe({
+      next: (data: any) => {
+        this.currencies = Object.keys(data);
+        this.convertCurrency();
+      },
+      error: (error) => {
+        console.error('Error loading currencies:', error);
+        this.errorMessage = 'Failed to load currencies. Please refresh the page.';
+      }
     });
   }
 
   convertCurrency() {
+    if (!this.fromAmount || !this.fromCurrency || !this.newCurrency) {
+      this.errorMessage = 'Please fill in all fields';
+      return;
+    }
+
     this.currencyService.convert(this.fromAmount, this.fromCurrency, this.newCurrency)
       .pipe(
         catchError(error => {
@@ -41,14 +51,20 @@ export class AppComponent implements OnInit {
           return of(null);
         })
       )
-      .subscribe((response) => {
-        if (response && response.rates && response.rates[this.newCurrency]) {
-          // Usa la risposta per ottenere il tasso di conversione desiderato
-          this.toAmount = response.rates[this.newCurrency] * this.fromAmount;
-          this.errorMessage = ''; // Reset dell'errore in caso di successo
-        } else {
-          // Se non ci sono dati di conversione disponibili
-          this.errorMessage = 'Conversion rate not available for the selected currency.';
+      .subscribe({
+        next: (response) => {
+          if (response && response.convertedAmount) {
+            this.toAmount = response.convertedAmount;
+            this.errorMessage = '';
+          } else {
+            this.errorMessage = 'Conversion rate not available for the selected currency.';
+            this.toAmount = null;
+          }
+        },
+        error: (error) => {
+          console.error('Conversion error:', error);
+          this.errorMessage = 'An error occurred during conversion.';
+          this.toAmount = null;
         }
       });
   }
@@ -65,6 +81,8 @@ export class AppComponent implements OnInit {
 
   onFromAmountChange(newAmount: number) {
     this.fromAmount = newAmount;
-    this.convertCurrency();
+    if (!isNaN(newAmount)) {
+      this.convertCurrency();
+    }
   }
 }
