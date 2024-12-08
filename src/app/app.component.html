@@ -1,40 +1,55 @@
 <main class="main">
-  <div class="container">
-    <h1>Currency Converter</h1>
-    <p>Converts currencies from one to another </p>
-  
-    <!-- Sezione per selezionare le valute e inserire l'importo -->
-    <div class="d-flex-value">
-      <label for="fromAmount">Import:</label>
-      <input type="number" [(ngModel)]="fromAmount" (input)="onFromAmountChange(fromAmount)" />
-  
-      <label for="fromCurrency">From:</label>
-      <select [(ngModel)]="fromCurrency" (change)="onFromCurrencyChange(fromCurrency)">
-        <option *ngFor="let currency of currencies" [value]="currency">{{ currency }}</option>
-      </select>
-  
-      <label for="toCurrency">To:</label>
-      <select [(ngModel)]="newCurrency" (change)="onToCurrencyChange(newCurrency)">
-        <option *ngFor="let currency of currencies" [value]="currency">{{ currency }}</option>
-      </select>
-    </div>
-    <div class="button-container">
-      <!-- Bottone per la conversione -->
-      <button (click)="convertCurrency()">Convert</button>
-    </div>
-  
-    <!-- Mostra l'importo convertito -->
-    
-  
-    <!-- Messaggio di errore se la conversione non va a buon fine -->
-    <div *ngIf="errorMessage">
-      <p style="color: red; text-align: center;">{{ errorMessage }}</p>
+  <div class="container-20">
+    <p>
+      ciao
+    </p>
+  </div>
+  <div class="container-60">
+
+    <div class="f-d-flex-column">
+      <div class="container-small">
+        <h1>Currency Converter</h1>
+        <p>Converts currencies from one to another </p>
+      
+        <!-- Sezione per selezionare le valute e inserire l'importo -->
+        <div class="d-flex-value">
+          <label for="fromAmount">Import:</label>
+          <input type="number" [(ngModel)]="fromAmount" (input)="onFromAmountChange(fromAmount)" />
+      
+          <label for="fromCurrency">From:</label>
+          <select [(ngModel)]="fromCurrency" (change)="onFromCurrencyChange(fromCurrency)">
+            <option *ngFor="let currency of currencies" [value]="currency">{{ currency }}</option>
+          </select>
+      
+          <label for="toCurrency">To:</label>
+          <select [(ngModel)]="newCurrency" (change)="onToCurrencyChange(newCurrency)">
+            <option *ngFor="let currency of currencies" [value]="currency">{{ currency }}</option>
+          </select>
+        </div>
+        <div class="button-container">
+          <!-- Bottone per la conversione -->
+          <button (click)="convertCurrency()">Convert</button>
+        </div>
+      
+        <!-- Mostra l'importo convertito -->
+        
+      
+        <!-- Messaggio di errore se la conversione non va a buon fine -->
+        <div *ngIf="errorMessage">
+          <p style="color: red; text-align: center;">{{ errorMessage }}</p>
+        </div>
+      </div>
+      <div class="convertedContainer">
+        <div *ngIf="toAmount !== null">
+          <p>{{ fromAmount }} {{ fromCurrency }} = {{ toAmount | number:'1.2-2' }} {{ newCurrency }}</p>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="convertedContainer">
-    <div *ngIf="toAmount !== null">
-      <p>{{ fromAmount }} {{ fromCurrency }} = {{ toAmount | number:'1.2-2' }} {{ newCurrency }}</p>
-    </div>
+  <div class="container-20">
+    <p>
+      ciao
+    </p>
   </div>
 </main>
 <router-outlet />

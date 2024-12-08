@@ -1,17 +1,32 @@
 main {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    justify-content: space-between;
 }
 
-.container {
-    width: 500px;
+.container-20 {
+    width: 20%;
+    height: 100%;
+    border: 2px solid black;
+}
+
+.container-60 {
+    width: 60%;
+}
+
+.container-small {
+    width: 100%;
     border: 2px solid rgb(61, 238, 45);
     padding: 20px;
     margin-top: 50px;
     border-radius: 10px;
     background-color: rgb(51, 27, 27);
+}
+
+.f-d-flex-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 h1 {
