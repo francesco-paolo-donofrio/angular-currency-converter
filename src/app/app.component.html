@@ -1,7 +1,13 @@
 <main class="main">
-  <div class="container-20">
+  <div class="container-20-left">
     <p>
-      ciao
+      With this container you are able to see the list of currencies and convert them. 
+    </p>
+    <p>
+      You can also convert currencies from one to another. 
+    </p>
+    <p>
+      The currency converter is a simple tool but at the same time very useful. 
     </p>
   </div>
   <div class="container-60">
@@ -26,13 +32,6 @@
             <option *ngFor="let currency of currencies" [value]="currency">{{ currency }}</option>
           </select>
         </div>
-        <div class="button-container">
-          <!-- Bottone per la conversione -->
-          <button (click)="convertCurrency()">Convert</button>
-        </div>
-      
-        <!-- Mostra l'importo convertito -->
-        
       
         <!-- Messaggio di errore se la conversione non va a buon fine -->
         <div *ngIf="errorMessage">
@@ -46,7 +45,7 @@
       </div>
     </div>
   </div>
-  <div class="container-20">
+  <div class="container-20-right">
     <p>
       ciao
     </p>

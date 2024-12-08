@@ -1,12 +1,40 @@
 main {
     display: flex;
     justify-content: space-between;
+    height: 100vh;
 }
 
-.container-20 {
+.container-20-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
     width: 20%;
     height: 100%;
     border: 2px solid black;
+    border-radius: 10px;
+    background-color: darkgreen;
+
+    p {
+        color: white;
+        text-align: center;
+        font-size: 20px;
+        padding: 20px;
+        font-weight: bold;
+
+        &:hover {
+            cursor: pointer;
+            color: rgb(207, 95, 3);
+        }
+    }
+}
+
+.container-20-right {
+    width: 20%;
+    height: 100%;
+    border: 2px solid black;
+    border-radius: 10px;
+    background-color: darkgreen;
 }
 
 .container-60 {
@@ -14,7 +42,7 @@ main {
 }
 
 .container-small {
-    width: 100%;
+    width: 85%;
     border: 2px solid rgb(61, 238, 45);
     padding: 20px;
     margin-top: 50px;
