@@ -34,7 +34,6 @@ main {
     height: 100%;
     border: 2px solid black;
     border-radius: 10px;
-    background-image: url('/public/images/moneygrass.jpg');
 }
 
 .container-60 {
