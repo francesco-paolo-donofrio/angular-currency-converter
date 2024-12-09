@@ -43,8 +43,28 @@ main {
     }
 }
 
+.font-awesome-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+
+    i {
+        height: 50px;
+        width: 50px;
+        font-size: 30px;
+        color: rgb(61, 238, 45);
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
 .container-60 {
     width: 60%;
+    height: 100%;
 }
 
 .container-small {
