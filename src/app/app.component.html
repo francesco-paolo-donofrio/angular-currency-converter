@@ -1,62 +1,38 @@
-<main class="main">
-  <div class="container-20-left">
-    <p>
-      With this container you are able to see the list of currencies and convert them. 
-    </p>
-    <p>
-      You can also convert currencies from one to another. 
-    </p>
-    <p>
-      The currency converter is a simple tool but at the same time very useful. 
-    </p>
-  </div>
-  <div class="container-60">
+<div class="tool-card">
+  <h1>Currency Converter</h1>
 
-    <div class="f-d-flex-column">
-      <div class="container-small">
-        <h1>Currency Converter</h1>
-        <p>Converts currencies from one to another </p>
-      
-        <!-- Sezione per selezionare le valute e inserire l'importo -->
-        <div class="d-flex-value">
-          <label for="fromAmount">Import:</label>
-          <input type="number" [(ngModel)]="fromAmount" (input)="onFromAmountChange(fromAmount)" />
-      
-          <label for="fromCurrency">From:</label>
-          <select [(ngModel)]="fromCurrency" (change)="onFromCurrencyChange(fromCurrency)">
-            <option *ngFor="let currency of currencies" [value]="currency">{{ currency }}</option>
-          </select>
-      
-          <label for="toCurrency">To:</label>
-          <select [(ngModel)]="newCurrency" (change)="onToCurrencyChange(newCurrency)">
-            <option *ngFor="let currency of currencies" [value]="currency">{{ currency }}</option>
-          </select>
-        </div>
-      
-        <!-- Messaggio di errore se la conversione non va a buon fine -->
-        <div *ngIf="errorMessage">
-          <p style="color: red; text-align: center;">{{ errorMessage }}</p>
-        </div>
-      </div>
-      <div class="convertedContainer">
-        <div *ngIf="toAmount !== null">
-          <p>{{ fromAmount }} {{ fromCurrency }} = {{ toAmount | number:'1.2-2' }} {{ newCurrency }}</p>
-        </div>
-      </div>
-      <div class="font-awesome-container">
-        <i class="fa-brands fa-facebook" style="color: #74C0FC;"></i>
-        <i class="fa-brands fa-twitter" style="color: #63E6BE;"></i>
-        <i class="fa-brands fa-linkedin" style="color: #74C0FC;"></i>
-        <i class="fa-brands fa-youtube" style="color: #d51a1a;"></i>
-        <i class="fa-brands fa-instagram" style="color: #5c0b0b;"></i>
-        <i class="fa-brands fa-pinterest" style="color: #0930af;"></i>
-        <i class="fa-brands fa-tiktok" style="color: #07aec4;"></i>
-        <i class="fa-brands fa-snapchat" style="color: #ff08d6;"></i>
-      </div>
-    </div>
+  <div class="field">
+    <input
+      type="number"
+      [(ngModel)]="fromAmount"
+      (input)="convertCurrency()"
+      placeholder="Amount"
+    />
+    <select [(ngModel)]="fromCurrency" (change)="convertCurrency()">
+      <option *ngFor="let c of currencies" [value]="c">{{ c }}</option>
+    </select>
   </div>
-  <div class="container-20-right">
-    <img src="images/screensaver.jpg" alt="screensaver">
+
+  <div class="swap" (click)="swapCurrencies()">⇄ swap</div>
+
+  <div class="field">
+    <input type="number" [value]="toAmount" disabled />
+    <select [(ngModel)]="newCurrency" (change)="convertCurrency()">
+      <option *ngFor="let c of currencies" [value]="c">{{ c }}</option>
+    </select>
   </div>
-</main>
-<router-outlet />
+
+  <div class="result" *ngIf="toAmount !== null">
+    {{ toAmount | number:'1.2-2' }}
+  </div>
+
+  <div class="meta" *ngIf="toAmount !== null">
+    Conversione aggiornata automaticamente
+  </div>
+
+  <div *ngIf="errorMessage" class="meta" style="color:#dc2626">
+    {{ errorMessage }}
+  </div>
+</div>
+
+<router-outlet></router-outlet>

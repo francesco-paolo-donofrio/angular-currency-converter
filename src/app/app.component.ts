@@ -37,6 +37,13 @@ export class AppComponent implements OnInit {
     });
   }
 
+  swapCurrencies() {
+  const temp = this.fromCurrency;
+  this.fromCurrency = this.newCurrency;
+  this.newCurrency = temp;
+  this.convertCurrency();
+}
+
   convertCurrency() {
     if (!this.fromAmount || !this.fromCurrency || !this.newCurrency) {
       this.errorMessage = 'Please fill in all fields';
