@@ -5,29 +5,13 @@
   <title>AngularCurrencyConverter</title>
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- opzionale: icone -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>
-  <app-root>
-    <div class="container">
-      <h1>Currency Converter</h1>
-      <app-currency-input
-        [currencies]="currencies"
-        [(selectedCurrency)]="fromCurrency"
-        [(amount)]="fromAmount"
-        (currencyChange)="onFromCurrencyChange($event)"
-        (amountChange)="onFromAmountChange($event)"
-      ></app-currency-input>
-    
-      <app-currency-input
-        [currencies]="currencies"
-        [(selectedCurrency)]="toCurrency"
-        [(amount)]="toAmount"
-        (currencyChange)="onToCurrencyChange($event)"
-        (amountChange)="onToAmountChange($event)"
-      ></app-currency-input>
-    </div>
-  </app-root>
+  <app-root></app-root>
 </body>
 </html>
