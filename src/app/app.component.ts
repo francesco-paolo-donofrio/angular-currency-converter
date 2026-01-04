@@ -9,87 +9,61 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterOutlet],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'] 
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'angular-currency-converter';
   currencies: string[] = [];
-  fromCurrency: string = 'EUR';
-  newCurrency: string = 'USD';
-  fromAmount: number = 1;
-  toAmount: number | null = null;
-  errorMessage: string = '';
 
-  constructor(private currencyService: CurrencyService) { }
+  fromCurrency = 'EUR';
+  toCurrency = 'USD';
+  fromAmount = 1;
+  toAmount?: number;
 
-  ngOnInit() {
+  errorMessage = '';
+
+  constructor(private currencyService: CurrencyService) {}
+
+  ngOnInit(): void {
     this.currencyService.getCurrencies().subscribe({
-      next: (data: any) => {
-        this.currencies = Object.keys(data);
-        this.convertCurrency();
+      next: currencies => {
+        this.currencies = currencies;
+        this.convert();
       },
-      error: (error) => {
-        console.error('Error loading currencies:', error);
-        this.errorMessage = 'Failed to load currencies. Please refresh the page.';
+      error: () => {
+        this.errorMessage = 'Failed to load currencies.';
       }
     });
   }
 
-  swapCurrencies() {
-  const temp = this.fromCurrency;
-  this.fromCurrency = this.newCurrency;
-  this.newCurrency = temp;
-  this.convertCurrency();
-}
+  swapCurrencies(): void {
+    [this.fromCurrency, this.toCurrency] =
+      [this.toCurrency, this.fromCurrency];
+    this.convert();
+  }
 
-  convertCurrency() {
-    if (!this.fromAmount || !this.fromCurrency || !this.newCurrency) {
+  convert(): void {
+    if (!this.isValid()) {
       this.errorMessage = 'Please fill in all fields';
       return;
     }
 
-    this.currencyService.convert(this.fromAmount, this.fromCurrency, this.newCurrency)
-      .pipe(
-        catchError(error => {
-          console.error('Error occurred:', error);
-          this.errorMessage = 'Conversion failed. Please try again later.';
-          return of(null);
-        })
-      )
+    this.currencyService
+      .convert(this.fromAmount, this.fromCurrency, this.toCurrency)
       .subscribe({
-        next: (response) => {
-          if (response && response.convertedAmount) {
-            this.toAmount = response.convertedAmount;
-            this.errorMessage = '';
-          } else {
-            this.errorMessage = 'Conversion rate not available for the selected currency.';
-            this.toAmount = null;
-          }
+        next: result => {
+          this.toAmount = result.convertedAmount;
+          this.errorMessage = '';
         },
-        error: (error) => {
-          console.error('Conversion error:', error);
-          this.errorMessage = 'An error occurred during conversion.';
-          this.toAmount = null;
+        error: () => {
+          this.toAmount = undefined;
+          this.errorMessage = 'Conversion failed. Try again later.';
         }
       });
   }
 
-  onFromCurrencyChange(newCurrency: string) {
-    this.fromCurrency = newCurrency;
-    this.convertCurrency();
-  }
-
-  onToCurrencyChange(newCurrency: string) {
-    this.newCurrency = newCurrency;
-    this.convertCurrency();
-  }
-
-  onFromAmountChange(newAmount: number) {
-    this.fromAmount = newAmount;
-    if (!isNaN(newAmount)) {
-      this.convertCurrency();
-    }
+  private isValid(): boolean {
+    return !!this.fromAmount && !!this.fromCurrency && !!this.toCurrency;
   }
 }
