@@ -5,34 +5,35 @@
     <input
       type="number"
       [(ngModel)]="fromAmount"
-      (input)="convertCurrency()"
+      (input)="convert()"
       placeholder="Amount"
     />
-    <select [(ngModel)]="fromCurrency" (change)="convertCurrency()">
+
+    <select [(ngModel)]="fromCurrency" (change)="convert()">
       <option *ngFor="let c of currencies" [value]="c">{{ c }}</option>
     </select>
   </div>
 
-  <div class="swap" (click)="swapCurrencies()">⇄ swap</div>
+  <button class="swap" type="button" (click)="swapCurrencies()">
+    ⇄ Swap
+  </button>
 
   <div class="field">
     <input type="number" [value]="toAmount" disabled />
-    <select [(ngModel)]="newCurrency" (change)="convertCurrency()">
+    <select [(ngModel)]="toCurrency" (change)="convert()">
       <option *ngFor="let c of currencies" [value]="c">{{ c }}</option>
     </select>
   </div>
 
-  <div class="result" *ngIf="toAmount !== null">
-    {{ toAmount | number:'1.2-2' }}
+  <div class="result" *ngIf="toAmount !== undefined">
+    {{ toAmount | number: '1.2-2' }}
   </div>
 
-  <div class="meta" *ngIf="toAmount !== null">
+  <p class="meta" *ngIf="toAmount !== undefined">
     Conversione aggiornata automaticamente
-  </div>
+  </p>
 
-  <div *ngIf="errorMessage" class="meta" style="color:#dc2626">
+  <p class="error" *ngIf="errorMessage">
     {{ errorMessage }}
-  </div>
+  </p>
 </div>
-
-<router-outlet></router-outlet>
